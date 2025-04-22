@@ -1,0 +1,343 @@
+CREATE SCHEMA livrariasucesso ;
+USE livrariasucesso;
+
+CREATE TABLE livrariasucesso.clientes (
+  id INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(45) NULL,
+  data_nascimento date NULL,
+  telefone VARCHAR(45) NULL,
+  email VARCHAR(45) NULL,
+  endereco VARCHAR(45) NULL,
+  PRIMARY KEY (id));
+
+CREATE TABLE livrariasucesso.compras (
+  id INT NOT NULL AUTO_INCREMENT,
+  id_cliente INT NULL,
+  data_compra DATE NULL,
+  status ENUM('ENTREGUE', 'ENVIADO', 'PENDENTE', 'DEVOLVIDO') NULL,
+  PRIMARY KEY (id));
+
+CREATE TABLE livrariasucesso.autores (
+  id INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(45) NULL,
+  email VARCHAR(45) NULL,
+  PRIMARY KEY (id));
+
+CREATE TABLE livrariasucesso.editoras (
+  id INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(45) NULL,
+  endereco VARCHAR(45) NULL,
+  telefone VARCHAR(45) NULL,
+  email VARCHAR(45) NULL,
+  PRIMARY KEY (id));
+
+CREATE TABLE livrariasucesso.livros (
+  id INT NOT NULL AUTO_INCREMENT,
+  id_editora INT NULL,
+  nome VARCHAR(45) NULL,
+  data DATE NULL,
+  classe_indicativa ENUM('L', '+10', '+12', '+14', '+16', '+18') NULL,
+  tipo_capa VARCHAR(45) NULL,
+  PRIMARY KEY (id));
+
+CREATE TABLE livrariasucesso.compras_livros (
+  id INT NOT NULL AUTO_INCREMENT,
+  id_compra INT NULL,
+  id_livro INT NULL,
+  quantidade INT NULL,
+  valor_compra FLOAT NULL,
+  PRIMARY KEY (id));
+
+CREATE TABLE livrariasucesso.autores_livros (
+  id INT NOT NULL AUTO_INCREMENT,
+  id_autor INT NULL,
+  id_livro INT NULL,
+  PRIMARY KEY (id));
+
+-- Adicionar chaves estrangeiras
+
+ALTER TABLE livrariasucesso.compras 
+ADD CONSTRAINT chave_cliente
+  FOREIGN KEY (id_cliente)
+  REFERENCES livrariasucesso.clientes (id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE livrariasucesso.compras_livros 
+ADD CONSTRAINT chave_compra
+  FOREIGN KEY (id_compra)
+  REFERENCES livrariasucesso.compras (id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT chave_livro
+  FOREIGN KEY (id_livro)
+  REFERENCES livrariasucesso.livros (id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE livrariasucesso.livros 
+ADD CONSTRAINT chave_editora
+  FOREIGN KEY (id_editora)
+  REFERENCES livrariasucesso.editoras (id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE livrariasucesso.autores_livros 
+ADD CONSTRAINT chave_livros
+  FOREIGN KEY (id_livro)
+  REFERENCES livrariasucesso.livros (id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT chave_autores
+  FOREIGN KEY (id_autor)
+  REFERENCES livrariasucesso.autores (id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+-- TABELA CLIENTES
+
+INSERT INTO livrariasucesso.clientes (nome, data_nascimento, telefone, email, endereco) VALUES
+('João Silva', '1990-05-14', '11999990001', 'joao@email.com', 'Rua A, 100'),
+('Maria Souza', '1985-08-22', '11999990002', 'maria@email.com', 'Rua B, 200'),
+('Carlos Lima', '1992-11-03', '11999990003', 'carlos@email.com', 'Rua C, 300'),
+('Ana Pereira', '1988-07-19', '11999990004', 'ana@email.com', 'Rua D, 400'),
+('Pedro Gomes', '1995-02-25', '11999990005', 'pedro@email.com', 'Rua E, 500'),
+('Juliana Costa', '1991-09-14', '11999990006', 'juliana@email.com', 'Rua F, 600'),
+('Lucas Fernandes', '1983-05-30', '11999990007', 'lucas@email.com', 'Rua G, 700'),
+('Fernanda Alves', '1997-12-10', '11999990008', 'fernanda@email.com', 'Rua H, 800'),
+('Ricardo Martins', '1989-06-27', '11999990009', 'ricardo@email.com', 'Rua I, 900'),
+('Mariana Rocha', '2000-02-02', '11999990010', 'mariana@email.com', 'Rua J, 1000'),
+('Thiago Nunes', '1993-08-11', '11999990011', 'thiago@email.com', 'Rua K, 1100'),
+('Patrícia Oliveira', '1987-04-15', '11999990012', 'patricia@email.com', 'Rua L, 1200'),
+('Roberto Santos', '1994-03-20', '11999990013', 'roberto@email.com', 'Rua M, 1300'),
+('Camila Lima', '1986-09-25', '11999990014', 'camila@email.com', 'Rua N, 1400'),
+('Gustavo Henrique', '1998-07-30', '11999990015', 'gustavo@email.com', 'Rua O, 1500'),
+('Isabela Costa', '1990-12-05', '11999990016', 'isabela@email.com', 'Rua P, 1600'),
+('Felipe Souza', '1984-11-10', '11999990017', 'felipe@email.com', 'Rua Q, 1700'),
+('Larissa Mendes', '1996-06-15', '11999990018', 'larissa@email.com', 'Rua R, 1800'),
+('Bruno Almeida', '1982-01-20', '11999990019', 'bruno@email.com', 'Rua S, 1900'),
+('Carla Ribeiro', '1999-08-25', '11999990020', 'carla@email.com', 'Rua T, 2000'),
+('Daniel Pereira', '1981-05-30', '11999990021', 'daniel@email.com', 'Rua U, 2100'),
+('Eduarda Silva', '1997-02-10', '11999990022', 'eduarda@email.com', 'Rua V, 2200'),
+('Fabio Costa', '1983-09-15', '11999990023', 'fabio@email.com', 'Rua W, 2300'),
+('Gabriela Souza', '1991-04-20', '11999990024', 'gabriela@email.com', 'Rua X, 2400'),
+('Henrique Lima', '1989-03-25', '11999990025', 'henrique@email.com', 'Rua Y, 2500'),
+('Igor Santos', '1995-10-30', '11999990026', 'igor@email.com', 'Rua Z, 2600'),
+('Juliana Oliveira', '1987-07-05', '11999990027', 'juliana@email.com', 'Rua AA, 2700'),
+('Karine Alves', '1993-12-10', '11999990028', 'karine@email.com', 'Rua BB, 2800'),
+('Leonardo Mendes', '1985-11-15', '11999990029', 'leonardo@email.com', 'Rua CC, 2900'),
+('Mariana Rocha', '2000-02-02', '11999990030', 'mariana@email.com', 'Rua DD, 3000');
+
+-- TABELA AUTORES
+
+INSERT INTO livrariasucesso.autores (nome, email) VALUES
+('Machado de Assis', 'machado@email.com'),
+('Clarice Lispector', 'clarice@email.com'),
+('Graciliano Ramos', 'graciliano@email.com'),
+('Monteiro Lobato', 'lobato@email.com'),
+('Jorge Amado', 'jorge@email.com'),
+('Cecília Meireles', 'cecilia@email.com'),
+('Carlos Drummond', 'drummond@email.com'),
+('José de Alencar', 'alencar@email.com'),
+('Raquel de Queiroz', 'raquel@email.com'),
+('Rubem Fonseca', 'rubem@email.com');
+
+-- TABELA EDITORAS
+
+INSERT INTO livrariasucesso.editoras (nome, endereco, telefone, email) VALUES
+('Editora Alpha', 'Av. Principal, 500', '1133333333', 'contato@alpha.com'),
+('Editora Beta', 'Rua Secundária, 222', '1144444444', 'contato@beta.com'),
+('Editora Gama', 'Av. Central, 777', '1155555555', 'contato@gama.com'),
+('Editora Delta', 'Rua Nova, 888', '1166666666', 'contato@delta.com'),
+('Editora Sigma', 'Av. Paulista, 999', '1177777777', 'contato@sigma.com'),
+('Editora Ômega', 'Rua Final, 1000', '1188888888', 'contato@omega.com');
+
+-- TABELA LIVROS
+
+INSERT INTO livrariasucesso.livros (id_editora, nome, data, classe_indicativa, tipo_capa) VALUES
+(1, 'Dom Casmurro', '1899-01-01', '+12', 'Dura'),
+(2, 'A Hora da Estrela', '1977-04-01', '+14', 'Mole'),
+(3, 'Vidas Secas', '1938-06-15', '+10', 'Dura'),
+(4, 'O Sítio do Pica-Pau Amarelo', '1920-09-10', 'L', 'Mole'),
+(5, 'Gabriela, Cravo e Canela', '1958-02-20', '+16', 'Dura'),
+(6, 'Memórias Póstumas de Brás Cubas', '1881-06-20', '+14', 'Dura'),
+(1, 'Quincas Borba', '1891-01-01', '+12', 'Dura'),
+(2, 'A Paixão Segundo G.H.', '1964-04-01', '+14', 'Mole'),
+(3, 'São Bernardo', '1934-06-15', '+10', 'Dura'),
+(4, 'Reinações de Narizinho', '1931-09-10', 'L', 'Mole'),
+(5, 'Dona Flor e Seus Dois Maridos', '1966-02-20', '+16', 'Dura'),
+(6, 'O Alienista', '1882-06-20', '+14', 'Dura'),
+(1, 'Esaú e Jacó', '1904-01-01', '+12', 'Dura'),
+(2, 'A Via Crucis do Corpo', '1974-04-01', '+14', 'Mole'),
+(3, 'Angústia', '1936-06-15', '+10', 'Dura'),
+(4, 'O Minotauro', '1939-09-10', 'L', 'Mole'),
+(5, 'Tenda dos Milagres', '1969-02-20', '+16', 'Dura'),
+(6, 'A Cartomante', '1884-06-20', '+14', 'Dura'),
+(1, 'Memorial de Aires', '1908-01-01', '+12', 'Dura'),
+(2, 'A Legião Estrangeira', '1964-04-01', '+14', 'Mole'),
+(3, 'Infância', '1945-06-15', '+10', 'Dura'),
+(4, 'O Picapau Amarelo', '1939-09-10', 'L', 'Mole'),
+(5, 'Teresa Batista Cansada de Guerra', '1972-02-20', '+16', 'Dura'),
+(6, 'O Espelho', '1882-06-20', '+14', 'Dura'),
+(1, 'A Mão e a Luva', '1874-01-01', '+12', 'Dura'),
+(2, 'A Cidade Sitiada', '1949-04-01', '+14', 'Mole'),
+(3, 'Insônia', '1947-06-15', '+10', 'Dura'),
+(4, 'O Poço do Visconde', '1937-09-10', 'L', 'Mole'),
+(5, 'Capitães da Areia', '1937-02-20', '+16', 'Dura'),
+(6, 'A Missão do Artista', '1882-06-20', '+14', 'Dura'),
+(1, 'Helena', '1876-01-01', '+12', 'Dura'),
+(2, 'A Maçã no Escuro', '1961-04-01', '+14', 'Mole'),
+(3, 'Caetés', '1933-06-15', '+10', 'Dura'),
+(4, 'A Chave do Tamanho', '1942-09-10', 'L', 'Mole'),
+(5, 'Mar Morto', '1936-02-20', '+16', 'Dura'),
+(6, 'O Homem Célebre', '1882-06-20', '+14', 'Dura'),
+(1, 'Iaiá Garcia', '1878-01-01', '+12', 'Dura'),
+(2, 'A Via Crucis do Corpo', '1974-04-01', '+14', 'Mole'),
+(3, 'Vidas Secas', '1938-06-15', '+10', 'Dura'),
+(4, 'O Saci', '1921-09-10', 'L', 'Mole'),
+(5, 'Jubiabá', '1935-02-20', '+16', 'Dura'),
+(6, 'A Cartomante', '1884-06-20', '+14', 'Dura'),
+(1, 'Memórias de um Sargento de Milícias', '1854-01-01', '+12', 'Dura'),
+(2, 'A Paixão Segundo G.H.', '1964-04-01', '+14', 'Mole'),
+(3, 'São Bernardo', '1934-06-15', '+10', 'Dura'),
+(4, 'Reinações de Narizinho', '1931-09-10', 'L', 'Mole'),
+(5, 'Dona Flor e Seus Dois Maridos', '1966-02-20', '+16', 'Dura'),
+(6, 'O Alienista', '1882-06-20', '+14', 'Dura'),
+(1, 'Esaú e Jacó', '1904-01-01', '+12', 'Dura'),
+(2, 'A Via Crucis do Corpo', '1974-04-01', '+14', 'Mole'),
+(3, 'Angústia', '1936-06-15', '+10', 'Dura'),
+(4, 'O Minotauro', '1939-09-10', 'L', 'Mole'),
+(5, 'Tenda dos Milagres', '1969-02-20', '+16', 'Dura'),
+(6, 'A Cartomante', '1884-06-20', '+14', 'Dura'),
+(1, 'Memorial de Aires', '1908-01-01', '+12', 'Dura'),
+(2, 'A Legião Estrangeira', '1964-04-01', '+14', 'Mole'),
+(3, 'Infância', '1945-06-15', '+10', 'Dura'),
+(4, 'O Picapau Amarelo', '1939-09-10', 'L', 'Mole'),
+(5, 'Teresa Batista Cansada de Guerra', '1972-02-20', '+16', 'Dura'),
+(6, 'O Espelho', '1882-06-20', '+14', 'Dura'),
+(1, 'A Mão e a Luva', '1874-01-01', '+12', 'Dura'),
+(2, 'A Cidade Sitiada', '1949-04-01', '+14', 'Mole'),
+(3, 'Insônia', '1947-06-15', '+10', 'Dura'),
+(4, 'O Poço do Visconde', '1937-09-10', 'L', 'Mole'),
+(5, 'Capitães da Areia', '1937-02-20', '+16', 'Dura'),
+(6, 'A Missão do Artista', '1882-06-20', '+18', 'Dura'),
+(1, 'Helena', '1876-01-01', '+12', 'Dura'),
+(2, 'A Maçã no Escuro', '1961-04-01', '+18', 'Mole'),
+(3, 'Caetés', '1933-06-15', '+10', 'Dura'),
+(4, 'A Chave do Tamanho', '1942-09-10', 'L', 'Mole'),
+(5, 'Mar Morto', '1936-02-20', '+16', 'Dura'),
+(6, 'O Homem Célebre', '1882-06-20', '+14', 'Dura'),
+(1, 'Iaiá Garcia', '1878-01-01', '+12', 'Dura'),
+(2, 'A Via Crucis do Corpo', '1974-04-01', '+14', 'Mole'),
+(3, 'Vidas Secas', '1938-06-15', '+10', 'Dura'),
+(4, 'O Saci', '1921-09-10', 'L', 'Mole'),
+(5, 'Jubiabá', '1935-02-20', '+16', 'Dura'),
+(6, 'A Cartomante', '1884-06-20', '+14', 'Dura'),
+(1, 'Memórias de um Sargento de Milícias', '1854-01-01', '+12', 'Dura'),
+(2, 'A Paixão Segundo G.H.', '1964-04-01', '+14', 'Mole'),
+(3, 'São Bernardo', '1934-06-15', '+10', 'Dura'),
+(4, 'Reinações de Narizinho', '1931-09-10', 'L', 'Mole'),
+(5, 'Dona Flor e Seus Dois Maridos', '1966-02-20', '+16', 'Dura'),
+(6, 'O Alienista', '1882-06-20', '+14', 'Dura'),
+(1, 'Esaú e Jacó', '1904-01-01', '+12', 'Dura'),
+(2, 'A Via Crucis do Corpo', '1974-04-01', '+14', 'Mole'),
+(3, 'Angústia', '1936-06-15', '+10', 'Dura'),
+(4, 'O Minotauro', '1939-09-10', 'L', 'Mole'),
+(5, 'Tenda dos Milagres', '1969-02-20', '+16', 'Dura'),
+(6, 'A Cartomante', '1884-06-20', '+14', 'Dura'),
+(6, 'A Cartomante', '1884-06-20', '+14', 'Mole'),
+(1, 'Memorial de Aires', '1908-01-01', '+12', 'Dura'),
+(1, 'Memorial de Aires', '1908-01-01', '+12', 'Mole'),
+(1, 'Memorial de Aires', '1908-01-01', '+12', 'Mole'),
+(2, 'A Legião Estrangeira', '1964-04-01', '+14', 'Mole'),
+(2, 'A Legião Estrangeira', '1964-04-01', '+14', 'Mole'),
+(3, 'Infância', '1945-06-15', '+10', 'Dura'),
+(1, 'A Mão e a Luva', '1874-01-01', '+12', 'Dura'),
+(4, 'O Picapau Amarelo', '1939-09-10', 'L', 'Mole'),
+(5, 'Teresa Batista Cansada de Guerra', '1972-02-20', '+16', 'Dura'),
+(6, 'O Espelho', '1882-06-20', '+14', 'Dura');
+
+-- TABELA COMPRAS 
+
+INSERT INTO livrariasucesso.compras (id_cliente, data_compra, status) VALUES
+(1,  '2024-01-15', 'ENTREGUE'),
+(2,  '2024-02-20', 'ENVIADO'),
+(3,  '2023-12-10', 'PENDENTE'),
+(3,  '2024-03-05', 'DEVOLVIDO'),
+(5,  '2024-01-28', 'ENTREGUE'),
+(6,  '2023-11-22', 'ENVIADO'),
+(7,  '2024-02-14', 'PENDENTE'),
+(8,  '2024-03-01', 'DEVOLVIDO'),
+(9,  '2023-10-30', 'ENTREGUE'),
+(10, '2024-01-10', 'ENVIADO'),
+(11, '2024-01-15', 'PENDENTE'),
+(12, '2024-02-20', 'DEVOLVIDO'),
+(13, '2023-12-10', 'ENTREGUE'),
+(13, '2024-03-05', 'ENVIADO'),
+(15, '2024-01-28', 'PENDENTE'),
+(16, '2023-11-22', 'DEVOLVIDO'),
+(17, '2024-02-14', 'ENTREGUE'),
+(18, '2024-03-01', 'ENVIADO'),
+(19, '2023-10-30', 'PENDENTE'),
+(20, '2024-01-10', 'DEVOLVIDO'),
+(21, '2024-01-15', 'ENTREGUE'),
+(22, '2024-02-20', 'ENVIADO'),
+(23, '2023-12-10', 'PENDENTE'),
+(23, '2024-03-05', 'DEVOLVIDO'),
+(25, '2024-01-28', 'ENTREGUE'),
+(26, '2023-11-22', 'ENVIADO'),
+(27, '2024-02-14', 'PENDENTE'),
+(28, '2024-03-01', 'DEVOLVIDO'),
+(29, '2023-10-30', 'ENTREGUE'),
+(29, '2024-01-10', 'ENVIADO');
+
+-- TABELA COMPRAS_LIVROS
+
+INSERT INTO livrariasucesso.compras_livros (id_compra, id_livro, quantidade, valor_compra) VALUES
+(1,  10,  2,  45.90),
+(2,  25,  1,  30.50),
+(3,  40,  3,  20.75),
+(3,  60,  1,  15.99),
+(5,  12,  2,  55.80),
+(6,  85,  1,  65.40),
+(7,  32,  3,  22.00),
+(8,  50,  2,  40.99),
+(9,  77,  1,  48.00),
+(10, 101, 2,  35.60),
+(11, 15,  1,  25.50),
+(12, 63,  2,  18.30),
+(13, 28,  3,  45.20),
+(13, 91, 1,  60.90),
+(15, 5,   2,  20.75),
+(16, 45,  1,  33.40),
+(17, 80,  3,  50.00),
+(18, 22,  2,  38.99),
+(19, 99,  1,  55.00),
+(20, 9,   2,  42.60),
+(21, 35,  3,  47.50),
+(22, 78,  1,  29.30),
+(23, 11,  2,  21.20),
+(23, 66,  1,  32.90),
+(25, 89,  2,  44.75),
+(26, 30,  3,  27.40),
+(27, 55,  1,  39.90),
+(28, 98,  2,  53.80),
+(29, 42,  1,  60.00),
+(29, 71,  3,  19.99);
+
+-- TABELA AUTORES_LIVROS
+
+INSERT INTO autores_livros (id_autor, id_livro) VALUES
+(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10),
+(1, 11), (2, 12), (3, 13), (4, 14), (5, 15), (6, 16), (7, 17), (8, 18), (9, 19), (10, 20),
+(1, 21), (2, 22), (3, 23), (4, 24), (5, 25), (6, 26), (7, 27), (8, 28), (9, 29), (10, 30),
+(1, 31), (2, 32), (3, 33), (4, 34), (5, 35), (6, 36), (7, 37), (8, 38), (9, 39), (10, 40),
+(1, 41), (2, 42), (3, 43), (4, 44), (5, 45), (6, 46), (7, 47), (8, 48), (9, 49), (10, 50),
+(1, 51), (2, 52), (3, 53), (4, 54), (5, 55), (6, 56), (7, 57), (8, 58), (9, 59), (10, 60),
+(1, 61), (2, 62), (3, 63), (4, 64), (5, 65), (6, 66), (7, 67), (8, 68), (9, 69), (10, 70),
+(1, 71), (2, 72), (3, 73), (4, 74), (5, 75), (6, 76), (7, 77), (8, 78), (9, 79), (10, 80),
+(1, 81), (2, 82), (3, 83), (4, 84), (5, 85), (6, 86), (7, 87), (8, 88), (9, 89), (10, 90),
+(1, 91), (2, 92), (3, 93), (4, 94), (5, 95), (6, 96), (7, 97), (8, 98), (9, 99), (10, 100),
+(1, 101), (2, 50), (3, 20), (4, 33), (5, 40), (6, 55), (7, 77), (8, 88), (9, 99), (10, 101),
+(1, 10), (2, 30), (3, 60), (4, 90), (5, 25), (6, 35), (7, 65), (8, 85), (9, 45), (10, 75);
